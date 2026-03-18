@@ -3,7 +3,7 @@
 A modern, smart attendance tracker for students.
 
 ## 🚀 Live Demo
-👉 [Click here to try it](https://yourusername.github.io/attendance-tracker/)
+👉 [Click here to try it](https://sahilbind05.github.io/AttendIQ/)
 
 ## ✨ Features
 - Track attendance for multiple subjects
