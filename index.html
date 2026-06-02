@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AttendanceIQ — Smart Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body data-theme="dark">
+
+<div class="app">
+  <!-- ── SIDEBAR ──────────────────────────────────── -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo">
+        <div class="logo-icon">📊</div>
+        <div>
+          <div class="logo-text">AttendIQ</div>
+          <div class="logo-sub">Smart Tracker</div>
+        </div>
+      </div>
+
+      <div class="nav-label">Menu</div>
+      <div class="nav-item active"><span class="nav-icon">🏠</span> Dashboard</div>
+      <div class="nav-item"><span class="nav-icon">📚</span> Subjects</div>
+      <div class="nav-item"><span class="nav-icon">📅</span> Calendar</div>
+      <div class="nav-item"><span class="nav-icon">📈</span> Analytics</div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="nav-label">Settings</div>
+
+      <!-- Target % -->
+      <div class="target-box">
+        <div class="target-label">Attendance Target</div>
+        <div class="target-row">
+          <input class="target-input" type="number" id="targetInput" min="1" max="100" value="75"/>
+          <span class="target-pct">%</span>
+        </div>
+      </div>
+
+      <!-- Dark mode -->
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+        <span id="themeLabel">Dark Mode</span>
+        <div class="toggle-switch on" id="themeSwitch"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ────────────────────────────────────── -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Attendance Dashboard</div>
+        <div class="page-sub">Track your academic attendance intelligently</div>
+      </div>
+      <div class="date-badge" id="dateBadge"></div>
+    </div>
+
+    <!-- SUMMARY STATS -->
+    <div class="summary-strip">
+      <div class="stat-card">
+        <div class="stat-icon">🗓️</div>
+        <div class="stat-val" id="sumTotal">—</div>
+        <div class="stat-key">Total Classes</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-val" id="sumAttended">—</div>
+        <div class="stat-key">Attended</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">❌</div>
+        <div class="stat-val" id="sumAbsent">—</div>
+        <div class="stat-key">Absent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div class="stat-val" id="sumSubjects">—</div>
+        <div class="stat-key">Subjects</div>
+      </div>
+    </div>
+
+    <!-- OVERALL PROGRESS -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <div>
+          <div class="progress-title">Overall Attendance</div>
+          <div id="reqMsg" style="font-size:13px;color:var(--muted);margin-top:4px;"></div>
+        </div>
+        <div class="overall-pct" id="overallPct">—%</div>
+      </div>
+      <div class="prog-bar-track">
+        <div class="prog-bar-fill" id="overallBar" style="width:0%;background:var(--green);"></div>
+      </div>
+      <div class="prog-info" id="progInfo"></div>
+    </div>
+
+    <!-- ADD SUBJECT -->
+    <div class="add-section">
+      <div class="section-title">➕ Add New Subject</div>
+      <div class="form-row">
+        <div class="field">
+          <label>Subject Name</label>
+          <input type="text" id="subjectName" placeholder="e.g. Data Structures"/>
+        </div>
+        <div class="field">
+          <label>Total Classes</label>
+          <input type="number" id="totalClasses" placeholder="e.g. 40" min="0"/>
+        </div>
+        <div class="field">
+          <label>Attended</label>
+          <input type="number" id="attendedClasses" placeholder="e.g. 34" min="0"/>
+        </div>
+        <div class="field btn-add-wrap">
+          <label>&nbsp;</label>
+          <button class="btn-add" onclick="addSubject()">Add Subject</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBJECT CARDS -->
+    <div class="subjects-header">
+      <div class="section-title" style="margin-bottom:0;">📚 Subjects</div>
+      <div id="subjectCount" style="font-size:13px;color:var(--muted);"></div>
+    </div>
+    <div class="subjects-grid" id="subjectsGrid"></div>
+  </main>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
