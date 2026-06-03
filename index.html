@@ -2,137 +2,257 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>AttendanceIQ — Smart Tracker</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>AttendIQ — Smart Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link href="style.css" rel="stylesheet"/>
 </head>
 <body data-theme="dark">
-
 <div class="app">
-  <!-- ── SIDEBAR ──────────────────────────────────── -->
-  <aside class="sidebar">
+
+<!-- ══════════════════════════════════════════════════════════
+     DESKTOP SIDEBAR
+══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div>
+    <div class="logo">
+      <div class="logo-icon">📊</div>
+      <div><div class="logo-text">AttendIQ</div><div class="logo-sub">Smart Tracker</div></div>
+    </div>
+    <div class="nav-label">Menu</div>
+    <div class="nav-item active" onclick="navigate('dashboard',this)"><span>🏠</span> Dashboard</div>
+    <div class="nav-item" onclick="navigate('subjects',this)"><span>📚</span> Subjects</div>
+    <div class="nav-item" onclick="navigate('calendar',this)"><span>📅</span> Calendar</div>
+    <div class="nav-item" onclick="navigate('analytics',this)"><span>📈</span> Analytics</div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="nav-label">Settings</div>
+    <div class="target-box">
+      <div class="target-label">Attendance Target</div>
+      <div class="target-row">
+        <input class="target-input" type="number" id="targetInput" min="1" max="100" value="75"/>
+        <span class="target-pct">%</span>
+      </div>
+    </div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span id="themeIcon">🌙</span><span id="themeLabel">Dark Mode</span>
+      <div class="toggle-switch on" id="themeSwitch"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- mobile top bar -->
+  <div class="mobile-topbar">
+    <div class="mobile-logo">
+      <div class="mobile-logo-icon">📊</div>
+      <div class="mobile-logo-text">AttendIQ</div>
+    </div>
+    <div class="mobile-theme-btn" id="mobileThemeBtn" onclick="toggleTheme()">🌙</div>
+  </div>
+
+  <!-- page header (title changes per page) -->
+  <div class="topbar">
     <div>
-      <div class="logo">
-        <div class="logo-icon">📊</div>
-        <div>
-          <div class="logo-text">AttendIQ</div>
-          <div class="logo-sub">Smart Tracker</div>
-        </div>
-      </div>
-
-      <div class="nav-label">Menu</div>
-      <div class="nav-item active"><span class="nav-icon">🏠</span> Dashboard</div>
-      <div class="nav-item"><span class="nav-icon">📚</span> Subjects</div>
-      <div class="nav-item"><span class="nav-icon">📅</span> Calendar</div>
-      <div class="nav-item"><span class="nav-icon">📈</span> Analytics</div>
+      <div class="page-title" id="pageTitle">Attendance Dashboard</div>
+      <div class="page-sub"  id="pageSub">Track your academic attendance intelligently</div>
     </div>
+    <div class="date-badge" id="dateBadge"></div>
+  </div>
 
-    <div class="sidebar-bottom">
-      <div class="nav-label">Settings</div>
-
-      <!-- Target % -->
-      <div class="target-box">
-        <div class="target-label">Attendance Target</div>
-        <div class="target-row">
-          <input class="target-input" type="number" id="targetInput" min="1" max="100" value="75"/>
-          <span class="target-pct">%</span>
-        </div>
-      </div>
-
-      <!-- Dark mode -->
-      <div class="theme-toggle" onclick="toggleTheme()">
-        <span id="themeIcon">🌙</span>
-        <span id="themeLabel">Dark Mode</span>
-        <div class="toggle-switch on" id="themeSwitch"><div class="toggle-knob"></div></div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- ── MAIN ────────────────────────────────────── -->
-  <main class="main">
-    <div class="topbar">
-      <div>
-        <div class="page-title">Attendance Dashboard</div>
-        <div class="page-sub">Track your academic attendance intelligently</div>
-      </div>
-      <div class="date-badge" id="dateBadge"></div>
-    </div>
-
-    <!-- SUMMARY STATS -->
+  <!-- ════════════════════════════════════════════
+       PAGE: DASHBOARD
+  ════════════════════════════════════════════ -->
+  <div class="page active" id="page-dashboard">
     <div class="summary-strip">
-      <div class="stat-card">
-        <div class="stat-icon">🗓️</div>
-        <div class="stat-val" id="sumTotal">—</div>
-        <div class="stat-key">Total Classes</div>
-      </div>
-      <div class="stat-card green">
-        <div class="stat-icon">✅</div>
-        <div class="stat-val" id="sumAttended">—</div>
-        <div class="stat-key">Attended</div>
-      </div>
-      <div class="stat-card red">
-        <div class="stat-icon">❌</div>
-        <div class="stat-val" id="sumAbsent">—</div>
-        <div class="stat-key">Absent</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">⚡</div>
-        <div class="stat-val" id="sumSubjects">—</div>
-        <div class="stat-key">Subjects</div>
-      </div>
+      <div class="stat-card"><div class="stat-icon">🗓️</div><div class="stat-val" id="sumTotal">—</div><div class="stat-key">Total</div></div>
+      <div class="stat-card green"><div class="stat-icon">✅</div><div class="stat-val" id="sumAttended">—</div><div class="stat-key">Attended</div></div>
+      <div class="stat-card red"><div class="stat-icon">❌</div><div class="stat-val" id="sumAbsent">—</div><div class="stat-key">Absent</div></div>
+      <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-val" id="sumSubjects">—</div><div class="stat-key">Subjects</div></div>
     </div>
-
-    <!-- OVERALL PROGRESS -->
     <div class="progress-section">
       <div class="progress-header">
-        <div>
+        <div style="flex:1;min-width:0;">
           <div class="progress-title">Overall Attendance</div>
-          <div id="reqMsg" style="font-size:13px;color:var(--muted);margin-top:4px;"></div>
+          <div id="reqMsg"></div>
         </div>
         <div class="overall-pct" id="overallPct">—%</div>
       </div>
-      <div class="prog-bar-track">
-        <div class="prog-bar-fill" id="overallBar" style="width:0%;background:var(--green);"></div>
-      </div>
+      <div class="prog-bar-track"><div class="prog-bar-fill" id="overallBar" style="width:0%;"></div></div>
       <div class="prog-info" id="progInfo"></div>
     </div>
-
-    <!-- ADD SUBJECT -->
     <div class="add-section">
       <div class="section-title">➕ Add New Subject</div>
       <div class="form-row">
-        <div class="field">
-          <label>Subject Name</label>
-          <input type="text" id="subjectName" placeholder="e.g. Data Structures"/>
-        </div>
-        <div class="field">
-          <label>Total Classes</label>
-          <input type="number" id="totalClasses" placeholder="e.g. 40" min="0"/>
-        </div>
-        <div class="field">
-          <label>Attended</label>
-          <input type="number" id="attendedClasses" placeholder="e.g. 34" min="0"/>
-        </div>
-        <div class="field btn-add-wrap">
-          <label>&nbsp;</label>
-          <button class="btn-add" onclick="addSubject()">Add Subject</button>
-        </div>
+        <div class="field"><label>Subject Name</label>
+          <input type="text" id="subjectName" placeholder="e.g. Data Structures" autocomplete="off"/></div>
+        <div class="field"><label>Total Classes</label>
+          <input type="number" id="totalClasses" placeholder="40" min="0" inputmode="numeric"/></div>
+        <div class="field"><label>Attended</label>
+          <input type="number" id="attendedClasses" placeholder="34" min="0" inputmode="numeric"/></div>
       </div>
+      <button class="btn-add" onclick="addSubject()">➕ Add Subject</button>
     </div>
-
-    <!-- SUBJECT CARDS -->
     <div class="subjects-header">
-      <div class="section-title" style="margin-bottom:0;">📚 Subjects</div>
-      <div id="subjectCount" style="font-size:13px;color:var(--muted);"></div>
+      <div class="section-title" style="margin-bottom:0;">📚 Your Subjects</div>
+      <div id="subjectCount" style="font-size:12px;color:var(--muted);"></div>
     </div>
     <div class="subjects-grid" id="subjectsGrid"></div>
-  </main>
+  </div><!-- /page-dashboard -->
+
+  <!-- ════════════════════════════════════════════
+       PAGE: SUBJECTS
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-subjects">
+    <div class="add-section" style="margin-bottom:22px;">
+      <div class="section-title">➕ Add New Subject</div>
+      <div class="form-row">
+        <div class="field"><label>Subject Name</label>
+          <input type="text" id="subjectName2" placeholder="e.g. Operating Systems" autocomplete="off"/></div>
+        <div class="field"><label>Total Classes</label>
+          <input type="number" id="totalClasses2" placeholder="40" min="0" inputmode="numeric"/></div>
+        <div class="field"><label>Attended</label>
+          <input type="number" id="attendedClasses2" placeholder="34" min="0" inputmode="numeric"/></div>
+      </div>
+      <button class="btn-add" onclick="addSubject2()">➕ Add Subject</button>
+    </div>
+    <div class="subjects-header">
+      <div class="section-title" style="margin-bottom:0;">📚 All Subjects</div>
+      <div id="subjectCount2" style="font-size:12px;color:var(--muted);"></div>
+    </div>
+    <div class="subj-page-grid" id="subjectsGrid2"></div>
+  </div><!-- /page-subjects -->
+
+  <!-- ════════════════════════════════════════════
+       PAGE: CALENDAR
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-calendar">
+    <div class="cal-wrap">
+      <!-- calendar -->
+      <div class="cal-box">
+        <div class="cal-header">
+          <div class="cal-month" id="calMonthLabel"></div>
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="calMove(-1)">‹</button>
+            <button class="cal-nav-btn" onclick="calMove(1)">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--green)"></div>Present</div>
+          <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--red)"></div>Absent</div>
+          <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--accent)"></div>Today</div>
+        </div>
+      </div>
+      <!-- log panel -->
+      <div class="log-box">
+        <div class="log-title">Log Attendance</div>
+        <div class="log-sub" id="logSelectedDate">Select a date on the calendar</div>
+        <select class="log-subject-sel" id="logSubjectSel">
+          <option value="">— Select Subject —</option>
+        </select>
+        <div class="log-btns">
+          <button class="log-btn p" onclick="logAttendance('present')">✅ Present</button>
+          <button class="log-btn a" onclick="logAttendance('absent')">❌ Absent</button>
+          <button class="log-btn c" style="grid-column:1/-1;" onclick="logAttendance('clear')">↩ Clear This Day</button>
+        </div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:8px;">Recent Logs</div>
+        <div class="log-entries" id="logEntries"></div>
+      </div>
+    </div>
+  </div><!-- /page-calendar -->
+
+  <!-- ════════════════════════════════════════════
+       PAGE: ANALYTICS
+  ════════════════════════════════════════════ -->
+  <div class="page" id="page-analytics">
+    <div class="analytics-grid">
+      <!-- bar chart -->
+      <div class="ana-card full">
+        <div class="ana-title">📊 Attendance % by Subject</div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+      <!-- best & worst -->
+      <div class="ana-card">
+        <div class="ana-title">🏆 Best Subjects</div>
+        <div id="bestList"></div>
+      </div>
+      <div class="ana-card">
+        <div class="ana-title">⚠️ Needs Attention</div>
+        <div id="worstList"></div>
+      </div>
+      <!-- donut -->
+      <div class="ana-card">
+        <div class="ana-title">🍩 Overall Split</div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 80 80" width="80" height="80" id="donutSvg">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="var(--border)" stroke-width="10"/>
+            <circle id="donutArc" cx="40" cy="40" r="28" fill="none"
+              stroke="var(--green)" stroke-width="10"
+              stroke-dasharray="0 176" stroke-dashoffset="44"
+              style="transition:stroke-dasharray .6s cubic-bezier(.4,0,.2,1);transform:rotate(-90deg);transform-origin:center;"/>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-item"><div class="donut-dot" style="background:var(--green)"></div><span id="donutAtt">— Attended</span></div>
+            <div class="donut-item"><div class="donut-dot" style="background:var(--red)"></div><span id="donutAbs">— Absent</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- streak -->
+      <div class="ana-card">
+        <div class="ana-title">🔥 Quick Stats</div>
+        <div id="streakBox"></div>
+      </div>
+    </div>
+  </div><!-- /page-analytics -->
+
+</main>
+</div><!-- /app -->
+
+<!-- ══ MOBILE BOTTOM NAV ══════════════════════════════════════ -->
+<nav class="bottom-nav">
+  <div class="bnav-item active" id="bnav-dashboard" onclick="navigate('dashboard',null,true)">
+    <div class="bnav-icon">🏠</div>Home
+  </div>
+  <div class="bnav-item" id="bnav-subjects" onclick="navigate('subjects',null,true)">
+    <div class="bnav-icon">📚</div>Subjects
+  </div>
+  <div class="bnav-item" id="bnav-calendar" onclick="navigate('calendar',null,true)">
+    <div class="bnav-icon">📅</div>Calendar
+  </div>
+  <div class="bnav-item" id="bnav-analytics" onclick="navigate('analytics',null,true)">
+    <div class="bnav-icon">📈</div>Analytics
+  </div>
+  <div class="bnav-item" id="bnav-settings" onclick="openSettings()">
+    <div class="bnav-icon">⚙️</div>Settings
+  </div>
+</nav>
+
+<!-- ══ MOBILE SETTINGS DRAWER ════════════════════════════════ -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeSettings()"></div>
+<div class="settings-drawer" id="settingsDrawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title">⚙️ Settings</div>
+  <div class="target-box" style="margin-bottom:12px;">
+    <div class="target-label">Attendance Target</div>
+    <div class="target-row">
+      <input class="target-input" type="number" id="targetMobile" min="1" max="100" value="75" inputmode="numeric"/>
+      <span class="target-pct">%</span>
+    </div>
+  </div>
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span id="dIcon">🌙</span><span id="dLabel">Dark Mode</span>
+    <div class="toggle-switch on" id="dSwitch"><div class="toggle-knob"></div></div>
+  </div>
 </div>
 
-<!-- TOAST CONTAINER -->
 <div class="toast-wrap" id="toastWrap"></div>
-
 <script src="script.js"></script>
 </body>
 </html>
